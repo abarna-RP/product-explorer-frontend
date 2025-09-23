@@ -3,6 +3,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic"; // 🚨 Prevent prerender errors
+
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -11,13 +13,15 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (query) {
-      fetch(`http://localhost:3001/products/search/query?q=${query}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/search/query?q=${query}`)
         .then((res) => res.json())
         .then((data) => {
           setResults(data);
           setLoading(false);
         })
         .catch(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [query]);
 
