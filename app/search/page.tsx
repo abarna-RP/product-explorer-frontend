@@ -1,9 +1,7 @@
 "use client";
+
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-
-export const dynamic = "force-dynamic"; // 🚨 Prevent prerender errors
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -13,14 +11,22 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (query) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/search/query?q=${query}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/search?q=${query}`)
         .then((res) => res.json())
         .then((data) => {
-          setResults(data);
+          if (Array.isArray(data)) {
+            setResults(data);
+          } else {
+            setResults([]); // 🛑 API array இல்லனா empty
+          }
           setLoading(false);
         })
-        .catch(() => setLoading(false));
+        .catch(() => {
+          setResults([]);
+          setLoading(false);
+        });
     } else {
+      setResults([]);
       setLoading(false);
     }
   }, [query]);
@@ -28,13 +34,10 @@ export default function SearchPage() {
   if (loading) return <p className="p-4">Loading...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        Search Results for: <span className="text-blue-600">{query}</span>
-      </h1>
-
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Search Results for "{query}"</h1>
       {results.length === 0 ? (
-        <p className="text-gray-600">No products found.</p>
+        <p className="text-gray-600">No products found</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {results.map((product) => (
@@ -42,16 +45,14 @@ export default function SearchPage() {
               <img
                 src={product.imageUrl}
                 alt={product.title}
-                className="w-full h-40 object-cover mb-2"
+                className="w-full h-48 object-cover rounded mb-4"
               />
-              <h2 className="font-semibold">{product.title}</h2>
-              <p className="text-sm text-gray-600">{product.author}</p>
-              <Link
-                href={`/product/${product.id}`}
-                className="text-blue-600 hover:underline text-sm mt-2 block"
-              >
-                View Details
-              </Link>
+              <h2 className="text-lg font-semibold">{product.title}</h2>
+              <p className="text-gray-600">{product.author}</p>
+              <p className="font-bold mt-2">
+                {product.currency}
+                {product.price}
+              </p>
             </div>
           ))}
         </div>

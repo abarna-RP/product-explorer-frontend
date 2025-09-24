@@ -11,7 +11,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:3001/products/${id}`)
+      fetch(`https://product-explorer-backend-2.onrender.com/products/${id}`)
         .then((res) => res.json())
         .then((data) => {
           // ✅ backend return single object

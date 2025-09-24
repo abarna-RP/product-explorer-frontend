@@ -11,7 +11,7 @@ export default function CategoryPage() {
 
   useEffect(() => {
     if (slug) {
-      fetch(`http://localhost:3001/products/category/${slug}`)
+      fetch(`https://product-explorer-backend-2.onrender.com/products/category/${slug}`)
         .then((res) => res.json())
         .then((data) => {
           setProducts(data);
