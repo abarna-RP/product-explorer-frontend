@@ -1,13 +1,16 @@
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  // ✅ params-ஐ await பண்ணணும்
+  const { slug } = await params;
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/category/${params.slug}`,
-    { cache: "no-store" } // 👈 fresh data always
+    `${process.env.NEXT_PUBLIC_API_URL}/products/category/${slug}`,
+    { cache: "no-store" }
   );
   const products = await res.json();
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">{params.slug.toUpperCase()}</h1>
+      <h1 className="text-2xl font-bold mb-4">{slug.toUpperCase()}</h1>
 
       {products.length === 0 ? (
         <p className="text-gray-500">No products found in this category.</p>
