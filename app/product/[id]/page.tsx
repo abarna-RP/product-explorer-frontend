@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function ProductDetailPage() {
-  const { id } = useParams() as { id: string };
+  const { id } = useParams();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +35,7 @@ export default function ProductDetailPage() {
 
       <div className="flex gap-6">
         <img
-          src={product.imageUrl}
+          src={product.imageUrl}   // ✅ correct key
           alt={product.title}
           className="w-64 h-80 object-cover mb-4 rounded-md shadow"
         />
@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
           </div>
 
           <a
-            href={product.sourceUrl}
+            href={product.sourceUrl}   // ✅ correct key
             target="_blank"
             className="text-white bg-green-600 px-4 py-2 rounded hover:bg-green-700"
           >
