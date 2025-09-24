@@ -13,7 +13,7 @@ export default function SearchPageContent() {
     if (query) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/search?q=${query}`)
         .then((res) => res.json())
-        .then((data) => setResults(data))
+        .then((data) => setResults(Array.isArray(data) ? data : [])) // ✅ safe check
         .catch(() => setResults([]))
         .finally(() => setLoading(false));
     } else {
@@ -37,7 +37,7 @@ export default function SearchPageContent() {
           {results.map((product) => (
             <div key={product.id} className="border rounded-lg shadow p-4">
               <img
-                src={product.imageUrl}
+                src={product.imageUrl}   // ✅ backend key name
                 alt={product.title}
                 className="w-full h-48 object-cover rounded mb-2"
               />
@@ -47,6 +47,14 @@ export default function SearchPageContent() {
                 {product.currency}
                 {product.price}
               </p>
+              <a
+                href={product.sourceUrl}   // ✅ backend key name
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline text-sm mt-2 inline-block"
+              >
+                View Source
+              </a>
             </div>
           ))}
         </div>
