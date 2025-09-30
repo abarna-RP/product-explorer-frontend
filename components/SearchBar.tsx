@@ -14,17 +14,17 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center max-w-md mx-auto">
+    <form onSubmit={handleSearch} className="flex  items-center max-w-md mx-auto">
       <input
         type="text"
         placeholder="Search products..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="flex-1 border border-gray-300 rounded-l px-3 py-2 focus:outline-none"
+        className="flex-1  text-black border border-gray-600 rounded-l px-3 py-2 focus:outline-none"
       />
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded-r hover:bg-blue-700"
+        className="bg-green-700 text-white px-4 py-2 rounded-r hover:bg-green-800"
       >
         Search
       </button>

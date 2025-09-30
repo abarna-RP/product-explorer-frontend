@@ -16,13 +16,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+      <body
+        className="text-white flex flex-col min-h-screen bg-fixed bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/bg.jpg')", // 👈 உங்க image public/bg.jpg
+        }}
+      >
         <Providers>
           <Navbar />
-          <div className="bg-white shadow p-4">
+
+          {/* remove bg-white & shadow */}
+          <div className="p-4">
             <SearchBar />
           </div>
+
           <main className="flex-grow max-w-6xl mx-auto p-4">{children}</main>
+
           <Footer />
         </Providers>
       </body>
